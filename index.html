@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Price is Right Guess Form</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="app.css">
 </head>
 <body>
 <div class="container">
@@ -14,10 +14,11 @@
         <input type="text" id="name" name="name" required>
         <label for="guess">Your Guess:</label>
         <input type="number" id="guess" name="guess" required>
-        <input type="submit" value="Submit">
+        <input type="submit" id="submitBtn" value="Submit">
     </form>
+    <button id="pickWinnerBtn">Pick Winner</button>
     <div id="response"></div>
 </div>
-<script src="script.js"></script>
+<script src="app.js"></script>
 </body>
 </html>
