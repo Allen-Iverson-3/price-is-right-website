@@ -1,65 +1,55 @@
-class Person {
-    constructor(name, guess) {
-        this.name = name;
-        this.guess = guess;
-    }
-}
+document.addEventListener("DOMContentLoaded", function() {
+    const guessForm = document.getElementById("guessForm");
+    const submitGuessBtn = document.getElementById("submitGuess");
+    const message = document.getElementById("message");
 
-class PickItem {
-    static pickItems() {
-        return "Audi Q5";
-    }
+    let guesses = [];
 
-    static itemPrice(item) {
-        switch (item) {
-            case "Audi Q5":
-                return 45300;
-            default:
-                return 350;
-        }
-    }
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-    const personList = [];
-
-    function handleSubmit(event) {
+    guessForm.addEventListener("submit", function(event) {
         event.preventDefault();
 
-        const name = document.getElementById('name').value;
-        const guess = parseInt(document.getElementById('guess').value);
+        const name = document.getElementById("nameInput").value;
+        const guess = parseInt(document.getElementById("guessInput").value);
 
-        const person = new Person(name, guess);
-        personList.push(person);
+        if (!name || !guess || guess <= 0) {
+            message.textContent = "Please enter a valid name and guess.";
+            return;
+        }
 
-        document.getElementById('name').value = '';
-        document.getElementById('guess').value = '';
+        guesses.push({ name: name, guess: guess });
+        updateUI();
+
+        submitGuessBtn.disabled = true;
+        submitGuessBtn.style.display = "none";
+        message.textContent = "Thank you for your guess!";
+    });
+
+    function updateUI() {
+        // Loop through the guesses array
+        for (let i = 0; i < guesses.length; i++) {
+            const guess = guesses[i];
+            console.log(`Name: ${guess.name}, Guess: ${guess.guess}`);
+        }
     }
 
-    function pickWinner() {
-        const item = PickItem.pickItems();
+    // Example function to find the closest guess
+    function findClosestGuess() {
         let closestGuess = null;
         let closestDifference = Infinity;
 
-        for (const person of personList) {
-            const price = PickItem.itemPrice(item);
-            const difference = Math.abs(person.guess - price);
-
-            if (closestGuess === null || difference < closestDifference) {
-                closestGuess = person;
+        for (let i = 0; i < guesses.length; i++) {
+            const guess = guesses[i];
+            const difference = Math.abs(guess.guess - 45300); // Actual price is 45300
+            if (difference < closestDifference) {
                 closestDifference = difference;
+                closestGuess = guess;
             }
         }
 
-        if (closestGuess !== null) {
-            console.log(`${closestGuess.name} is the winner! They guessed closest to the price of ${item}.`);
-        } else {
-            console.log('No winner this time.');
-        }
+        return closestGuess;
     }
 
-    const form = document.getElementById('guessForm');
-    form.addEventListener('submit', handleSubmit);
-
-    document.getElementById('pickWinnerBtn').addEventListener('click', pickWinner);
+    // Usage example
+    const winner = findClosestGuess();
+    console.log(`The winner is ${winner.name} with a guess of ${winner.guess}.`);
 });
